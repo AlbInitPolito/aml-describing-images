@@ -21,10 +21,14 @@ export default function CarouselCompoent(props) {
     const [edges, setEdges] = useState([])
     const [saturation, setSaturation] = useState([])
     const [shades, setShades] = useState([])
+    const [customShades, setCustomShades] = useState([])
     const [background, setBackground] = useState([])
+    const [customBackground, setCustomBackground] = useState([])
     const [instances, setInstances] = useState([])
+    const [customInstances, setCustomInstances] = useState([])
     const [text, setText] = useState([])
     const [texture, setTexture] = useState([])
+    const [customTextures, setCustomTextures] = useState([])
     const [perspective, setPerspective] = useState([])
 
     const [alert, setAlert] = useState(false)
@@ -38,11 +42,15 @@ export default function CarouselCompoent(props) {
         setDetails([])
         setEdges([])
         setShades([])
+        setCustomShades([])
         setSaturation([])
         setBackground([])
+        setCustomBackground([])
         setInstances([])
+        setCustomInstances([])
         setText([])
         setTexture([])
+        setCustomTextures([])
         setPerspective([])
     }
 
@@ -72,6 +80,11 @@ export default function CarouselCompoent(props) {
         setShades([label])
     }
 
+    const handleCustomShades = (label) => {
+        const currentCustomShades = customShades;
+        setCustomShades([...currentCustomShades, label])
+    }
+
     const handleBackground = (label) => {
         const current = background;
         if(!background.includes(label) && label !== "")
@@ -80,8 +93,18 @@ export default function CarouselCompoent(props) {
             setBackground(current.filter(e => e !== label))
     }
 
+    const handleCustomBackground = (label) => {
+        const currentCustomBackground = customBackground;
+        setCustomBackground([...currentCustomBackground, label])
+    }
+
     const handleInstances = (label) => {
         setInstances([label])
+    }
+
+    const handleCustomInstances = (label) => {
+        const currentCustomInstances = customInstances;
+        setCustomInstances([...currentCustomInstances, label])
     }
 
     const handleText = (label) => {
@@ -89,7 +112,7 @@ export default function CarouselCompoent(props) {
         if(!text.includes(label) && label !== "")
             setText([...current_text, label])
         else
-            setEdges(current_text.filter(e => e !== label))
+            setText(current_text.filter(e => e !== label))
     }
 
     const handleTexture = (label) => {
@@ -98,6 +121,11 @@ export default function CarouselCompoent(props) {
             setTexture([...current, label])
         else
             setTexture(current.filter(e => e !== label))
+    }
+
+    const handleCustomTextures = (label) => {
+        const currentCustomTextures = customTextures;
+        setCustomTextures([...currentCustomTextures, label])
     }
 
     const handlePerspective = (label) => {
@@ -111,11 +139,11 @@ export default function CarouselCompoent(props) {
                 details: details.join(", "),
                 edges: edges.join(", "),
                 color_saturation: saturation.join(", "),
-                color_shades: shades.join(", "),
-                background: background.join(", "),
-                single_instance: instances.join(", "),
+                color_shades: (shades.concat(customShades)).join(", "),
+                background: (background.concat(customBackground)).join(", "),
+                single_instance: (instances.concat(customInstances)).join(", "),
                 text: text.join(", "),
-                texture: texture.join(", "),
+                texture: (texture.concat(customTextures)).join(", "),
                 perspective: perspective.join(", "),
             }
             props.addDescription(currentImage)
@@ -214,7 +242,7 @@ export default function CarouselCompoent(props) {
                                     />
                                     )})}
                                     <Form.Control defaultValue={""} id={"custom_shade"+index} name={"group4"+index} size="sm" placeholder="[color]scale shades"/>
-                                    <Button size='sm' variant={'outline-warning'} onClick={() => handleShades(document.getElementById("custom_shade"+index).value)}>Add</Button>
+                                    <Button size='sm' variant={'outline-warning'} onClick={() => handleCustomShades(document.getElementById("custom_shade"+index).value)}>Add</Button>
                                     </Form> 
                                     <hr style={{backgroundColor: 'transparent'}}></hr>     
                                     <h5>background</h5>
@@ -230,7 +258,7 @@ export default function CarouselCompoent(props) {
                                     />
                                     )})}
                                     <Form.Control name={"group5"+index} id={"custom_background"+index} size="sm" placeholder="[color] background" />
-                                    <Button size='sm' variant={'outline-warning'} onClick={(e) => handleBackground(document.getElementById("custom_background"+index).value)}>Add</Button>
+                                    <Button size='sm' variant={'outline-warning'} onClick={(e) => handleCustomBackground(document.getElementById("custom_background"+index).value)}>Add</Button>
                                     </Form>  
                                     <hr style={{backgroundColor: 'transparent'}}></hr>     
                                     <h5>single instance</h5>
@@ -247,7 +275,7 @@ export default function CarouselCompoent(props) {
                                     )})}
                                     </Form>
                                     <Form.Control defaultValue={""} id={"custom_instances"+index} name={"group6"+index} size="sm" placeholder="[num] instances" />
-                                    <Button size='sm' variant={'outline-warning'} onClick={() => handleInstances(document.getElementById("custom_instances"+index).value)}>Add</Button>
+                                    <Button size='sm' variant={'outline-warning'} onClick={() => handleCustomInstances(document.getElementById("custom_instances"+index).value)}>Add</Button>
                                     <hr style={{backgroundColor: 'transparent'}}></hr>     
                                     <h5>text</h5>
                                     <Form>
@@ -277,7 +305,7 @@ export default function CarouselCompoent(props) {
                                     />
                                     )})}
                                     <Form.Control name={"group8"+index} id={"custom_texture"+index} size="sm" placeholder="[pattern] pattern" />
-                                    <Button size='sm' variant={'outline-warning'} onClick={(e) => handleTexture(document.getElementById("custom_texture"+index).value)}>Add</Button>
+                                    <Button size='sm' variant={'outline-warning'} onClick={(e) => handleCustomTextures(document.getElementById("custom_texture"+index).value)}>Add</Button>
                                     </Form> 
                                     <hr style={{backgroundColor: 'transparent'}}></hr>     
                                     <h5>prespective</h5>
@@ -323,19 +351,19 @@ export default function CarouselCompoent(props) {
             {saturation.map(e => <Badge pill bg="success">{e}</Badge>)}
             <br></br>
             <small>{'shades: '}</small>
-            {shades.map(e => <Badge pill bg="danger">{e}</Badge>)}
+            {(shades.concat(customShades)).map(e => <Badge pill bg="danger">{e}</Badge>)}
             <br></br>
             <small>{'background: '}</small>
-            {background.map(e => <Badge pill bg="warning" text="dark">{e}</Badge>)}
+            {(background.concat(customBackground)).map(e => <Badge pill bg="warning" text="dark">{e}</Badge>)}
             <br></br>
             <small>{'instances: '}</small>
-            {instances.map(e => <Badge pill bg="info">{e}</Badge>)}
+            {(instances.concat(customInstances)).map(e => <Badge pill bg="info">{e}</Badge>)}
             <br></br>
             <small>{'text: '}</small>
             {text.map(e => <Badge pill bg="light" text="dark">{e}</Badge>)}
             <br></br>
             <small>{'texture: '}</small>
-            {texture.map(e => <Badge pill bg="dark">{e}</Badge>)}
+            {(texture.concat(customTextures)).map(e => <Badge pill bg="dark">{e}</Badge>)}
             <br></br>
             <small>{'perspective: '}</small>
             {perspective.map(e => <Badge pill bg="primary">{e}</Badge>)}
